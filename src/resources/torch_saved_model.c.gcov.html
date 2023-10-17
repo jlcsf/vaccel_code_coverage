@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total_coverage_filtered.info - src/resources/torch_saved_model.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/resources</a> - torch_saved_model.c<span style="font-size: 80%;"> (source / <a href="torch_saved_model.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total_coverage_filtered.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">118</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2023-10-17 07:59:42</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<a name="2"><span class="lineNum">       2 </span>            :  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</a>
+<a name="3"><span class="lineNum">       3 </span>            :  * you may not use this file except in compliance with the License.</a>
+<a name="4"><span class="lineNum">       4 </span>            :  * You may obtain a copy of the License at</a>
+<a name="5"><span class="lineNum">       5 </span>            :  *</a>
+<a name="6"><span class="lineNum">       6 </span>            :  *  http://www.apache.org/licenses/LICENSE-2.0</a>
+<a name="7"><span class="lineNum">       7 </span>            :  *</a>
+<a name="8"><span class="lineNum">       8 </span>            :  * Unless required by applicable law or agreed to in writing, software</a>
+<a name="9"><span class="lineNum">       9 </span>            :  * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</a>
+<a name="10"><span class="lineNum">      10 </span>            :  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</a>
+<a name="11"><span class="lineNum">      11 </span>            :  * See the License for the specific language governing permissions and</a>
+<a name="12"><span class="lineNum">      12 </span>            :  * limitations under the License.</a>
+<a name="13"><span class="lineNum">      13 </span>            :  */</a>
+<a name="14"><span class="lineNum">      14 </span>            : </a>
+<a name="15"><span class="lineNum">      15 </span>            : #include &quot;resources/torch_saved_model.h&quot;</a>
+<a name="16"><span class="lineNum">      16 </span>            : #include &quot;utils.h&quot;</a>
+<a name="17"><span class="lineNum">      17 </span>            : #include &quot;error.h&quot;</a>
+<a name="18"><span class="lineNum">      18 </span>            : #include &quot;log.h&quot;</a>
+<a name="19"><span class="lineNum">      19 </span>            : #include &quot;resources.h&quot;</a>
+<a name="20"><span class="lineNum">      20 </span>            : </a>
+<a name="21"><span class="lineNum">      21 </span>            : #include &lt;stdio.h&gt;</a>
+<a name="22"><span class="lineNum">      22 </span>            : #include &lt;stdlib.h&gt;</a>
+<a name="23"><span class="lineNum">      23 </span>            : #include &lt;string.h&gt;</a>
+<a name="24"><span class="lineNum">      24 </span>            : #include &lt;regex.h&gt;</a>
+<a name="25"><span class="lineNum">      25 </span>            : #include &lt;dirent.h&gt;</a>
+<a name="26"><span class="lineNum">      26 </span>            : #include &lt;sys/stat.h&gt;</a>
+<a name="27"><span class="lineNum">      27 </span>            : #include &lt;unistd.h&gt;</a>
+<a name="28"><span class="lineNum">      28 </span>            : </a>
+<a name="29"><span class="lineNum">      29 </span>            : #define MAX_PATH 1024</a>
+<a name="30"><span class="lineNum">      30 </span>            : </a>
+<a name="31"><span class="lineNum">      31 </span><span class="lineNoCov">          0 : static int torch_model_destructor(void *data)</span></a>
+<a name="32"><span class="lineNum">      32 </span>            : {</a>
+<a name="33"><span class="lineNum">      33 </span><span class="lineNoCov">          0 :         struct vaccel_torch_saved_model *model =</span></a>
+<a name="34"><span class="lineNum">      34 </span>            :                 (struct vaccel_torch_saved_model *)data;</a>
+<a name="35"><span class="lineNum">      35 </span><span class="lineNoCov">          0 :         if (!model)</span></a>
+<a name="36"><span class="lineNum">      36 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="37"><span class="lineNum">      37 </span>            : </a>
+<a name="38"><span class="lineNum">      38 </span><span class="lineNoCov">          0 :         vaccel_file_destroy(&amp;model-&gt;model);</span></a>
+<a name="39"><span class="lineNum">      39 </span>            : </a>
+<a name="40"><span class="lineNum">      40 </span><span class="lineNoCov">          0 :         struct vaccel_resource *res = model-&gt;resource;</span></a>
+<a name="41"><span class="lineNum">      41 </span><span class="lineNoCov">          0 :         if (!res || !res-&gt;rundir)</span></a>
+<a name="42"><span class="lineNum">      42 </span><span class="lineNoCov">          0 :                 return VACCEL_OK;</span></a>
+<a name="43"><span class="lineNum">      43 </span>            : </a>
+<a name="44"><span class="lineNum">      44 </span>            :         char path[MAX_PATH];</a>
+<a name="45"><span class="lineNum">      45 </span><span class="lineNoCov">          0 :         if (snprintf(path, MAX_PATH, &quot;%s/variables&quot;, res-&gt;rundir) &gt;= MAX_PATH) {</span></a>
+<a name="46"><span class="lineNum">      46 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Path too long&quot;);</span></a>
+<a name="47"><span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 return VACCEL_ENAMETOOLONG;</span></a>
+<a name="48"><span class="lineNum">      48 </span>            :         }</a>
+<a name="49"><span class="lineNum">      49 </span>            : </a>
+<a name="50"><span class="lineNum">      50 </span><span class="lineNoCov">          0 :         if (dir_exists(path))</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 rmdir(path);</span></a>
+<a name="52"><span class="lineNum">      52 </span>            : </a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineNoCov">          0 :         return VACCEL_OK;</span></a>
+<a name="54"><span class="lineNum">      54 </span>            : }</a>
+<a name="55"><span class="lineNum">      55 </span>            : </a>
+<a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 : static int file_from_regex(struct vaccel_file *file, const char *dirpath,</span></a>
+<a name="57"><span class="lineNum">      57 </span>            :                 const char *pattern)</a>
+<a name="58"><span class="lineNum">      58 </span>            : {</a>
+<a name="59"><span class="lineNum">      59 </span>            :         regex_t r;</a>
+<a name="60"><span class="lineNum">      60 </span>            :         char path[MAX_PATH];</a>
+<a name="61"><span class="lineNum">      61 </span><span class="lineNoCov">          0 :         int ret = VACCEL_OK;</span></a>
+<a name="62"><span class="lineNum">      62 </span>            : </a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :         if (regcomp(&amp;r, pattern, REG_EXTENDED | REG_NOSUB))</span></a>
+<a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="65"><span class="lineNum">      65 </span>            : </a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 :         DIR *dir = opendir(dirpath);</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineNoCov">          0 :         if (!dir) {</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 ret = VACCEL_EINVAL;</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :                 goto cleanup_regex;</span></a>
+<a name="70"><span class="lineNum">      70 </span>            :         }</a>
+<a name="71"><span class="lineNum">      71 </span>            : </a>
+<a name="72"><span class="lineNum">      72 </span>            :         struct dirent *dent;</a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :         while ((dent = readdir(dir))) {</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :                 if (!regexec(&amp;r, dent-&gt;d_name, 0, 0, 0)) {</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :                         if (snprintf(path, MAX_PATH,</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                                 &quot;%s/%s&quot;, dirpath, dent-&gt;d_name) &gt;= MAX_PATH) {</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                                 ret = VACCEL_ENAMETOOLONG;</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :                                 break;</span></a>
+<a name="79"><span class="lineNum">      79 </span>            :                         }</a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineNoCov">          0 :                         ret = vaccel_file_new(file, path);</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineNoCov">          0 :                         break;</span></a>
+<a name="83"><span class="lineNum">      83 </span>            :                 }</a>
+<a name="84"><span class="lineNum">      84 </span>            :         }</a>
+<a name="85"><span class="lineNum">      85 </span>            : </a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineNoCov">          0 :         closedir(dir);</span></a>
+<a name="87"><span class="lineNum">      87 </span><span class="lineNoCov">          0 : cleanup_regex:</span></a>
+<a name="88"><span class="lineNum">      88 </span><span class="lineNoCov">          0 :         regfree(&amp;r);</span></a>
+<a name="89"><span class="lineNum">      89 </span>            : </a>
+<a name="90"><span class="lineNum">      90 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="91"><span class="lineNum">      91 </span>            : }</a>
+<a name="92"><span class="lineNum">      92 </span>            : </a>
+<a name="93"><span class="lineNum">      93 </span>            : /* Allocate a new SavedModel descriptor */</a>
+<a name="94"><span class="lineNum">      94 </span><span class="lineNoCov">          0 : struct vaccel_torch_saved_model *vaccel_torch_saved_model_new(void)</span></a>
+<a name="95"><span class="lineNum">      95 </span>            : {</a>
+<a name="96"><span class="lineNum">      96 </span><span class="lineNoCov">          0 :         struct vaccel_torch_saved_model *new = calloc(1, sizeof(*new));</span></a>
+<a name="97"><span class="lineNum">      97 </span><span class="lineNoCov">          0 :         if (!new)</span></a>
+<a name="98"><span class="lineNum">      98 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Could not allocate memory&quot;);</span></a>
+<a name="99"><span class="lineNum">      99 </span>            : </a>
+<a name="100"><span class="lineNum">     100 </span><span class="lineNoCov">          0 :         return new;</span></a>
+<a name="101"><span class="lineNum">     101 </span>            : }</a>
+<a name="102"><span class="lineNum">     102 </span>            : </a>
+<a name="103"><span class="lineNum">     103 </span>            : </a>
+<a name="104"><span class="lineNum">     104 </span>            : /* Set the export directory of a SavedModel</a>
+<a name="105"><span class="lineNum">     105 </span>            :  *</a>
+<a name="106"><span class="lineNum">     106 </span>            :  * Used to create a SavedModel from an export path. The call</a>
+<a name="107"><span class="lineNum">     107 </span>            :  * will check for the existence of the directory and it will</a>
+<a name="108"><span class="lineNum">     108 </span>            :  * look for the relevant files under that path, i.e. the protobuf</a>
+<a name="109"><span class="lineNum">     109 </span>            :  * description of the graph and the checkpoint and variable index</a>
+<a name="110"><span class="lineNum">     110 </span>            :  * files under the `variables` directory. However, it will not</a>
+<a name="111"><span class="lineNum">     111 </span>            :  * check for the validity of these files.</a>
+<a name="112"><span class="lineNum">     112 </span>            :  *</a>
+<a name="113"><span class="lineNum">     113 </span>            :  * If the exported model is malformed this will not fail. We will</a>
+<a name="114"><span class="lineNum">     114 </span>            :  * find that out when trying to actually load the model</a>
+<a name="115"><span class="lineNum">     115 </span>            :  */</a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineNoCov">          0 : int vaccel_torch_saved_model_set_path(</span></a>
+<a name="117"><span class="lineNum">     117 </span>            :         struct vaccel_torch_saved_model *model,</a>
+<a name="118"><span class="lineNum">     118 </span>            :         const char *path</a>
+<a name="119"><span class="lineNum">     119 </span>            : ) {</a>
+<a name="120"><span class="lineNum">     120 </span>            :         char var_path[MAX_PATH];</a>
+<a name="121"><span class="lineNum">     121 </span>            : </a>
+<a name="122"><span class="lineNum">     122 </span><span class="lineNoCov">          0 :         if (!model)</span></a>
+<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="124"><span class="lineNum">     124 </span>            : </a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         if (!dir_exists(path))</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="127"><span class="lineNum">     127 </span>            : </a>
+<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :         if (snprintf(var_path, MAX_PATH, &quot;%s/variables&quot;, path) &gt;= MAX_PATH) {</span></a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Path too long&quot;);</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :                 return VACCEL_ENAMETOOLONG;</span></a>
+<a name="131"><span class="lineNum">     131 </span>            :         }</a>
+<a name="132"><span class="lineNum">     132 </span>            : </a>
+<a name="133"><span class="lineNum">     133 </span>            :         /* Find the pt trace file in the top-level directory */</a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineNoCov">          0 :         int ret = file_from_regex(&amp;model-&gt;model, path, &quot;cnn_trace.pt&quot;);</span></a>
+<a name="135"><span class="lineNum">     135 </span><span class="lineNoCov">          0 :         if (ret) {</span></a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Could not find model file&quot;);</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineNoCov">          0 :                 return VACCEL_ENOENT;</span></a>
+<a name="138"><span class="lineNum">     138 </span>            :         }</a>
+<a name="139"><span class="lineNum">     139 </span>            : </a>
+<a name="140"><span class="lineNum">     140 </span><span class="lineNoCov">          0 :         model-&gt;path = strdup(path);</span></a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineNoCov">          0 :         if (!model-&gt;path) {</span></a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineNoCov">          0 :                 ret = VACCEL_ENOMEM;</span></a>
+<a name="143"><span class="lineNum">     143 </span>            :         }</a>
+<a name="144"><span class="lineNum">     144 </span>            : </a>
+<a name="145"><span class="lineNum">     145 </span><span class="lineNoCov">          0 :         model-&gt;resource = NULL;</span></a>
+<a name="146"><span class="lineNum">     146 </span><span class="lineNoCov">          0 :         vaccel_debug(&quot;Set Torch model path to %s&quot;, model-&gt;path);</span></a>
+<a name="147"><span class="lineNum">     147 </span>            : </a>
+<a name="148"><span class="lineNum">     148 </span><span class="lineNoCov">          0 :         return VACCEL_OK;</span></a>
+<a name="149"><span class="lineNum">     149 </span>            : </a>
+<a name="150"><span class="lineNum">     150 </span>            :         //vaccel_file_destroy(&amp;model-&gt;model);</a>
+<a name="151"><span class="lineNum">     151 </span>            :         printf(&quot;could not destroy because of TORCH\n&quot;);</a>
+<a name="152"><span class="lineNum">     152 </span>            : </a>
+<a name="153"><span class="lineNum">     153 </span>            :         return ret;</a>
+<a name="154"><span class="lineNum">     154 </span>            : }</a>
+<a name="155"><span class="lineNum">     155 </span>            : </a>
+<a name="156"><span class="lineNum">     156 </span>            : /* Get the path of the export directory</a>
+<a name="157"><span class="lineNum">     157 </span>            :  *</a>
+<a name="158"><span class="lineNum">     158 </span>            :  * This will be NULL if the path is not owned</a>
+<a name="159"><span class="lineNum">     159 </span>            :  */</a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineNoCov">          0 : const char *vaccel_torch_saved_model_get_path(struct vaccel_torch_saved_model *model)</span></a>
+<a name="161"><span class="lineNum">     161 </span>            : {</a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineNoCov">          0 :         if (!model)</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 return NULL;</span></a>
+<a name="164"><span class="lineNum">     164 </span>            : </a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineNoCov">          0 :         return model-&gt;path;</span></a>
+<a name="166"><span class="lineNum">     166 </span>            : }</a>
+<a name="167"><span class="lineNum">     167 </span>            : </a>
+<a name="168"><span class="lineNum">     168 </span>            : /* Set the protobuf file from in-memory data</a>
+<a name="169"><span class="lineNum">     169 </span>            :  *</a>
+<a name="170"><span class="lineNum">     170 </span>            :  * Create the underlying file resource for the protobuf file</a>
+<a name="171"><span class="lineNum">     171 </span>            :  * with the Graph description. This will take ownership of the</a>
+<a name="172"><span class="lineNum">     172 </span>            :  * buffer passed as an argument.</a>
+<a name="173"><span class="lineNum">     173 </span>            :  */</a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineNoCov">          0 : int vaccel_torch_saved_model_set_model(</span></a>
+<a name="175"><span class="lineNum">     175 </span>            :         struct vaccel_torch_saved_model *model,</a>
+<a name="176"><span class="lineNum">     176 </span>            :         const uint8_t *ptr, size_t len</a>
+<a name="177"><span class="lineNum">     177 </span>            : ) {</a>
+<a name="178"><span class="lineNum">     178 </span><span class="lineNoCov">          0 :         vaccel_debug(&quot;Setting protobuf file for model&quot;);</span></a>
+<a name="179"><span class="lineNum">     179 </span>            : </a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineNoCov">          0 :         if (!model) {</span></a>
+<a name="181"><span class="lineNum">     181 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Invalid model&quot;);</span></a>
+<a name="182"><span class="lineNum">     182 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="183"><span class="lineNum">     183 </span>            :         }</a>
+<a name="184"><span class="lineNum">     184 </span>            : </a>
+<a name="185"><span class="lineNum">     185 </span><span class="lineNoCov">          0 :         if (!ptr || !len) {</span></a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Invalid data for protobuf model&quot;);</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="188"><span class="lineNum">     188 </span>            :         }</a>
+<a name="189"><span class="lineNum">     189 </span>            : </a>
+<a name="190"><span class="lineNum">     190 </span><span class="lineNoCov">          0 :         int ret = vaccel_file_from_buffer(&amp;model-&gt;model, ptr, len,</span></a>
+<a name="191"><span class="lineNum">     191 </span>            :                         NULL, false, NULL, false);</a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="193"><span class="lineNum">     193 </span>            : }</a>
+<a name="194"><span class="lineNum">     194 </span>            : </a>
+<a name="195"><span class="lineNum">     195 </span>            : /* Get a pointer to the data of the protobuf Graph model</a>
+<a name="196"><span class="lineNum">     196 </span>            :  *</a>
+<a name="197"><span class="lineNum">     197 </span>            :  * This will return a pointer to the data of the protobuf Graph file.</a>
+<a name="198"><span class="lineNum">     198 </span>            :  * If the data have not been read before, this will first try to</a>
+<a name="199"><span class="lineNum">     199 </span>            :  * read the data (mmap them in memory) before returning.</a>
+<a name="200"><span class="lineNum">     200 </span>            :  */</a>
+<a name="201"><span class="lineNum">     201 </span><span class="lineNoCov">          0 : const uint8_t *vaccel_torch_saved_model_get_model(</span></a>
+<a name="202"><span class="lineNum">     202 </span>            :         struct vaccel_torch_saved_model *model,</a>
+<a name="203"><span class="lineNum">     203 </span>            :         size_t *len</a>
+<a name="204"><span class="lineNum">     204 </span>            : ) {</a>
+<a name="205"><span class="lineNum">     205 </span><span class="lineNoCov">          0 :         if (!model)</span></a>
+<a name="206"><span class="lineNum">     206 </span><span class="lineNoCov">          0 :                 return NULL;</span></a>
+<a name="207"><span class="lineNum">     207 </span>            : </a>
+<a name="208"><span class="lineNum">     208 </span>            :         // vaccel_file_data will read the file in memory if</a>
+<a name="209"><span class="lineNum">     209 </span>            :         // not already done</a>
+<a name="210"><span class="lineNum">     210 </span><span class="lineNoCov">          0 :         return vaccel_file_data(&amp;model-&gt;model, len);</span></a>
+<a name="211"><span class="lineNum">     211 </span>            : }</a>
+<a name="212"><span class="lineNum">     212 </span>            : </a>
+<a name="213"><span class="lineNum">     213 </span>            : /* Register the file as a vAccel resource</a>
+<a name="214"><span class="lineNum">     214 </span>            :  *</a>
+<a name="215"><span class="lineNum">     215 </span>            :  * If the SavedModel is created from in-memory data, this will first</a>
+<a name="216"><span class="lineNum">     216 </span>            :  * create the SavedModel export directory structure and persist the files</a>
+<a name="217"><span class="lineNum">     217 </span>            :  * before creating the resource.</a>
+<a name="218"><span class="lineNum">     218 </span>            :  */</a>
+<a name="219"><span class="lineNum">     219 </span><span class="lineNoCov">          0 : int vaccel_torch_saved_model_register(struct vaccel_torch_saved_model *model)</span></a>
+<a name="220"><span class="lineNum">     220 </span>            : {</a>
+<a name="221"><span class="lineNum">     221 </span><span class="lineNoCov">          0 :         vaccel_debug(&quot;Registering new vAccel PyTorch model&quot;);</span></a>
+<a name="222"><span class="lineNum">     222 </span>            : </a>
+<a name="223"><span class="lineNum">     223 </span><span class="lineNoCov">          0 :         if (!vaccel_file_initialized(&amp;model-&gt;model)) {</span></a>
+<a name="224"><span class="lineNum">     224 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Will not register uninitialized resource&quot;);</span></a>
+<a name="225"><span class="lineNum">     225 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="226"><span class="lineNum">     226 </span>            :         }</a>
+<a name="227"><span class="lineNum">     227 </span>            : </a>
+<a name="228"><span class="lineNum">     228 </span><span class="lineNoCov">          0 :         struct vaccel_resource *res = malloc(sizeof(*model-&gt;resource));</span></a>
+<a name="229"><span class="lineNum">     229 </span><span class="lineNoCov">          0 :         if (!res) {</span></a>
+<a name="230"><span class="lineNum">     230 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Could not allocate memory&quot;);</span></a>
+<a name="231"><span class="lineNum">     231 </span><span class="lineNoCov">          0 :                 return VACCEL_ENOMEM;</span></a>
+<a name="232"><span class="lineNum">     232 </span>            :         }</a>
+<a name="233"><span class="lineNum">     233 </span>            : </a>
+<a name="234"><span class="lineNum">     234 </span><span class="lineNoCov">          0 :         int ret = resource_new(res, VACCEL_RES_TORCH_MODEL, (void *)model,</span></a>
+<a name="235"><span class="lineNum">     235 </span>            :                         torch_model_destructor);</a>
+<a name="236"><span class="lineNum">     236 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="237"><span class="lineNum">     237 </span><span class="lineNoCov">          0 :                 goto free_resource;</span></a>
+<a name="238"><span class="lineNum">     238 </span>            : </a>
+<a name="239"><span class="lineNum">     239 </span>            :         /* If we have created the model from a path in the disk we are</a>
+<a name="240"><span class="lineNum">     240 </span>            :          * done here */</a>
+<a name="241"><span class="lineNum">     241 </span><span class="lineNoCov">          0 :         if (model-&gt;path)</span></a>
+<a name="242"><span class="lineNum">     242 </span><span class="lineNoCov">          0 :                 goto out;</span></a>
+<a name="243"><span class="lineNum">     243 </span>            :         </a>
+<a name="244"><span class="lineNum">     244 </span>            :         /* Else we need to persist the files in the disk */</a>
+<a name="245"><span class="lineNum">     245 </span><span class="lineNoCov">          0 :         ret = resource_create_rundir(res);</span></a>
+<a name="246"><span class="lineNum">     246 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="247"><span class="lineNum">     247 </span><span class="lineNoCov">          0 :                 goto destroy_resource;</span></a>
+<a name="248"><span class="lineNum">     248 </span>            : </a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineNoCov">          0 :         ret = vaccel_file_persist(&amp;model-&gt;model, res-&gt;rundir,</span></a>
+<a name="250"><span class="lineNum">     250 </span>            :                         &quot;cnn_trace.pt&quot;, true);</a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="252"><span class="lineNum">     252 </span><span class="lineNoCov">          0 :                 goto destroy_resource;</span></a>
+<a name="253"><span class="lineNum">     253 </span>            : </a>
+<a name="254"><span class="lineNum">     254 </span><span class="lineNoCov">          0 :         model-&gt;path = res-&gt;rundir;</span></a>
+<a name="255"><span class="lineNum">     255 </span><span class="lineNoCov">          0 : out:</span></a>
+<a name="256"><span class="lineNum">     256 </span><span class="lineNoCov">          0 :         vaccel_debug(&quot;New resource %lu&quot;, res-&gt;id);</span></a>
+<a name="257"><span class="lineNum">     257 </span><span class="lineNoCov">          0 :         model-&gt;resource = res;</span></a>
+<a name="258"><span class="lineNum">     258 </span>            : </a>
+<a name="259"><span class="lineNum">     259 </span><span class="lineNoCov">          0 :         return VACCEL_OK;</span></a>
+<a name="260"><span class="lineNum">     260 </span>            : </a>
+<a name="261"><span class="lineNum">     261 </span><span class="lineNoCov">          0 : destroy_resource:</span></a>
+<a name="262"><span class="lineNum">     262 </span><span class="lineNoCov">          0 :         resource_destroy(res);</span></a>
+<a name="263"><span class="lineNum">     263 </span><span class="lineNoCov">          0 : free_resource:</span></a>
+<a name="264"><span class="lineNum">     264 </span><span class="lineNoCov">          0 :         free(res);</span></a>
+<a name="265"><span class="lineNum">     265 </span>            : </a>
+<a name="266"><span class="lineNum">     266 </span><span class="lineNoCov">          0 :         return ret;</span></a>
+<a name="267"><span class="lineNum">     267 </span>            : }</a>
+<a name="268"><span class="lineNum">     268 </span>            : </a>
+<a name="269"><span class="lineNum">     269 </span>            : /* Destroy the SavedModel resource</a>
+<a name="270"><span class="lineNum">     270 </span>            :  *</a>
+<a name="271"><span class="lineNum">     271 </span>            :  * This will handle the destruction of the underlying resource and</a>
+<a name="272"><span class="lineNum">     272 </span>            :  * release any resources allocated for the model, i.e. delete the model</a>
+<a name="273"><span class="lineNum">     273 </span>            :  * directory if owned and deallocate the files.</a>
+<a name="274"><span class="lineNum">     274 </span>            :  */</a>
+<a name="275"><span class="lineNum">     275 </span><span class="lineNoCov">          0 : int vaccel_torch_saved_model_destroy(struct vaccel_torch_saved_model *model)</span></a>
+<a name="276"><span class="lineNum">     276 </span>            : {</a>
+<a name="277"><span class="lineNum">     277 </span><span class="lineNoCov">          0 :         if (!model)</span></a>
+<a name="278"><span class="lineNum">     278 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
+<a name="279"><span class="lineNum">     279 </span>            : </a>
+<a name="280"><span class="lineNum">     280 </span><span class="lineNoCov">          0 :         vaccel_debug(&quot;Destroying resource %u&quot;, model-&gt;resource-&gt;id);</span></a>
+<a name="281"><span class="lineNum">     281 </span>            :         /* This will destroy the underlying resource and call our</a>
+<a name="282"><span class="lineNum">     282 </span>            :          * destructor callback */</a>
+<a name="283"><span class="lineNum">     283 </span><span class="lineNoCov">          0 :         int ret = resource_destroy(model-&gt;resource);</span></a>
+<a name="284"><span class="lineNum">     284 </span><span class="lineNoCov">          0 :         if (ret)</span></a>
+<a name="285"><span class="lineNum">     285 </span><span class="lineNoCov">          0 :                 vaccel_warn(&quot;Could not destroy resource&quot;);</span></a>
+<a name="286"><span class="lineNum">     286 </span>            : </a>
+<a name="287"><span class="lineNum">     287 </span><span class="lineNoCov">          0 :         free(model-&gt;resource);</span></a>
+<a name="288"><span class="lineNum">     288 </span>            : </a>
+<a name="289"><span class="lineNum">     289 </span><span class="lineNoCov">          0 :         return VACCEL_OK;</span></a>
+<a name="290"><span class="lineNum">     290 </span>            : }</a>
+<a name="291"><span class="lineNum">     291 </span>            : </a>
+<a name="292"><span class="lineNum">     292 </span>            : /* Get the id of the SavedModel */</a>
+<a name="293"><span class="lineNum">     293 </span><span class="lineNoCov">          0 : vaccel_id_t vaccel_torch_saved_model_id(const struct vaccel_torch_saved_model *model)</span></a>
+<a name="294"><span class="lineNum">     294 </span>            : {</a>
+<a name="295"><span class="lineNum">     295 </span><span class="lineNoCov">          0 :         if (!model || !model-&gt;resource)</span></a>
+<a name="296"><span class="lineNum">     296 </span><span class="lineNoCov">          0 :                 return -1;</span></a>
+<a name="297"><span class="lineNum">     297 </span>            : </a>
+<a name="298"><span class="lineNum">     298 </span><span class="lineNoCov">          0 :         return model-&gt;resource-&gt;id;</span></a>
+<a name="299"><span class="lineNum">     299 </span>            : }</a>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="https://github.com/linux-test-project/lcov" target="_parent">LCOV version 1.16</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

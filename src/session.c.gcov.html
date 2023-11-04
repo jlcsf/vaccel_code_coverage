@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-11-02 04:38:48</td>
+            <td class="headerValue">2023-11-03 19:48:03</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">13</td>
@@ -110,26 +110,26 @@
 <a name="48"><span class="lineNum">      48 </span><span class="lineCov">          8 :         id_pool_release(&amp;sessions.ids, id);</span></a>
 <a name="49"><span class="lineNum">      49 </span><span class="lineCov">          8 : }</span></a>
 <a name="50"><span class="lineNum">      50 </span>            : </a>
-<a name="51"><span class="lineNum">      51 </span><span class="lineCov">          9 : int sessions_bootstrap(void)</span></a>
+<a name="51"><span class="lineNum">      51 </span><span class="lineCov">         10 : int sessions_bootstrap(void)</span></a>
 <a name="52"><span class="lineNum">      52 </span>            : {</a>
-<a name="53"><span class="lineNum">      53 </span><span class="lineCov">          9 :         int ret = id_pool_new(&amp;sessions.ids, MAX_VACCEL_SESSIONS);</span></a>
-<a name="54"><span class="lineNum">      54 </span><span class="lineCov">          9 :         if (ret)</span></a>
+<a name="53"><span class="lineNum">      53 </span><span class="lineCov">         10 :         int ret = id_pool_new(&amp;sessions.ids, MAX_VACCEL_SESSIONS);</span></a>
+<a name="54"><span class="lineNum">      54 </span><span class="lineCov">         10 :         if (ret)</span></a>
 <a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 return ret;</span></a>
 <a name="56"><span class="lineNum">      56 </span>            : </a>
-<a name="57"><span class="lineNum">      57 </span><span class="lineCov">       9225 :         for (size_t i = 0; i &lt; MAX_VACCEL_SESSIONS; ++i)</span></a>
-<a name="58"><span class="lineNum">      58 </span><span class="lineCov">       9216 :                 sessions.running_sessions[i] = NULL;</span></a>
+<a name="57"><span class="lineNum">      57 </span><span class="lineCov">      10250 :         for (size_t i = 0; i &lt; MAX_VACCEL_SESSIONS; ++i)</span></a>
+<a name="58"><span class="lineNum">      58 </span><span class="lineCov">      10240 :                 sessions.running_sessions[i] = NULL;</span></a>
 <a name="59"><span class="lineNum">      59 </span>            : </a>
-<a name="60"><span class="lineNum">      60 </span><span class="lineCov">          9 :         sessions.initialized = true;</span></a>
+<a name="60"><span class="lineNum">      60 </span><span class="lineCov">         10 :         sessions.initialized = true;</span></a>
 <a name="61"><span class="lineNum">      61 </span>            : </a>
-<a name="62"><span class="lineNum">      62 </span><span class="lineCov">          9 :         return VACCEL_OK;</span></a>
+<a name="62"><span class="lineNum">      62 </span><span class="lineCov">         10 :         return VACCEL_OK;</span></a>
 <a name="63"><span class="lineNum">      63 </span>            : }</a>
 <a name="64"><span class="lineNum">      64 </span>            : </a>
-<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          7 : int sessions_cleanup(void)</span></a>
+<a name="65"><span class="lineNum">      65 </span><span class="lineCov">          8 : int sessions_cleanup(void)</span></a>
 <a name="66"><span class="lineNum">      66 </span>            : {</a>
-<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          7 :         id_pool_destroy(&amp;sessions.ids);</span></a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          7 :         sessions.initialized = false;</span></a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          8 :         id_pool_destroy(&amp;sessions.ids);</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          8 :         sessions.initialized = false;</span></a>
 <a name="69"><span class="lineNum">      69 </span>            : </a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          7 :         return VACCEL_OK;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          8 :         return VACCEL_OK;</span></a>
 <a name="71"><span class="lineNum">      71 </span>            : }</a>
 <a name="72"><span class="lineNum">      72 </span>            : </a>
 <a name="73"><span class="lineNum">      73 </span><span class="lineCov">          3 : int vaccel_sess_register(struct vaccel_session *sess,</span></a>

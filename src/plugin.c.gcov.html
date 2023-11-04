@@ -31,13 +31,13 @@
             <td class="headerValue">total_coverage_filtered.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">118</td>
-            <td class="headerCovTableEntry">123</td>
+            <td class="headerCovTableEntry">117</td>
+            <td class="headerCovTableEntry">122</td>
             <td class="headerCovTableEntryHi">95.9 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-11-03 19:48:03</td>
+            <td class="headerValue">2023-11-04 01:02:03</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -181,7 +181,7 @@
 <a name="119"><span class="lineNum">     119 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
 <a name="120"><span class="lineNum">     120 </span>            : </a>
 <a name="121"><span class="lineNum">     121 </span><span class="lineCov">         20 :         if (!entry_linked(&amp;plugin-&gt;entry)) {</span></a>
-<a name="122"><span class="lineNum">     122 </span><span class="lineCov">          1 :                 vaccel_error(&quot;Trying to unregister unknown plugin&quot;);</span></a>
+<a name="122"><span class="lineNum">     122 </span>            :                 //assert(0 &amp;&amp; &quot;Trying to unregister unknown plugin&quot;);</a>
 <a name="123"><span class="lineNum">     123 </span><span class="lineCov">          1 :                 return VACCEL_ENOENT;</span></a>
 <a name="124"><span class="lineNum">     124 </span>            :         }</a>
 <a name="125"><span class="lineNum">     125 </span>            : </a>
@@ -219,13 +219,13 @@
 <a name="157"><span class="lineNum">     157 </span>            : </a>
 <a name="158"><span class="lineNum">     158 </span><span class="lineCov">         69 :         if (plugin_op-&gt;type &gt;= VACCEL_FUNCTIONS_NR) {</span></a>
 <a name="159"><span class="lineNum">     159 </span><span class="lineCov">          1 :                 vaccel_error(&quot;Unknown function type&quot;);</span></a>
-<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          1 :                 return VACCEL_EINVAL+1;</span></a>
+<a name="160"><span class="lineNum">     160 </span><span class="lineCov">          1 :                 return VACCEL_EINVAL;</span></a>
 <a name="161"><span class="lineNum">     161 </span>            :         }</a>
 <a name="162"><span class="lineNum">     162 </span>            : </a>
 <a name="163"><span class="lineNum">     163 </span><span class="lineCov">         68 :         struct vaccel_plugin *plugin = plugin_op-&gt;owner;</span></a>
 <a name="164"><span class="lineNum">     164 </span><span class="lineCov">         68 :         if (!plugin) {</span></a>
 <a name="165"><span class="lineNum">     165 </span><span class="lineCov">          1 :                 vaccel_error(&quot;Unknown plugin&quot;);</span></a>
-<a name="166"><span class="lineNum">     166 </span><span class="lineCov">          1 :                 return VACCEL_EINVAL+2;</span></a>
+<a name="166"><span class="lineNum">     166 </span><span class="lineCov">          1 :                 return VACCEL_EINVAL;</span></a>
 <a name="167"><span class="lineNum">     167 </span>            :         }</a>
 <a name="168"><span class="lineNum">     168 </span>            : </a>
 <a name="169"><span class="lineNum">     169 </span><span class="lineCov">         67 :         list_add_tail(&amp;plugin-&gt;ops, &amp;plugin_op-&gt;plugin_entry);</span></a>
@@ -308,9 +308,9 @@
 <a name="246"><span class="lineNum">     246 </span><span class="lineCov">          2 :         return 0;</span></a>
 <a name="247"><span class="lineNum">     247 </span>            : }</a>
 <a name="248"><span class="lineNum">     248 </span>            : </a>
-<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         15 : struct vaccel_plugin *get_virtio_plugin(void)</span></a>
+<a name="249"><span class="lineNum">     249 </span><span class="lineCov">         14 : struct vaccel_plugin *get_virtio_plugin(void)</span></a>
 <a name="250"><span class="lineNum">     250 </span>            : {</a>
-<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         15 :         return plugin_state.virtio;</span></a>
+<a name="251"><span class="lineNum">     251 </span><span class="lineCov">         14 :         return plugin_state.virtio;</span></a>
 <a name="252"><span class="lineNum">     252 </span>            : }</a>
 <a name="253"><span class="lineNum">     253 </span>            : </a>
 <a name="254"><span class="lineNum">     254 </span><span class="lineCov">         32 : int plugins_bootstrap()</span></a>

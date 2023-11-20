@@ -31,18 +31,18 @@
             <td class="headerValue">total_coverage_filtered.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntry">9</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntryLo">55.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-11-08 06:55:47</td>
+            <td class="headerValue">2023-11-19 05:16:35</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">0</td>
             <td class="headerCovTableEntry">1</td>
-            <td class="headerCovTableEntryLo">0.0 %</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -125,21 +125,21 @@
 <a name="63"><span class="lineNum">      63 </span>            :         vaccel_opencv_unpack,                   /* 23 */</a>
 <a name="64"><span class="lineNum">      64 </span>            : };</a>
 <a name="65"><span class="lineNum">      65 </span>            : </a>
-<a name="66"><span class="lineNum">      66 </span><span class="lineNoCov">          0 : int vaccel_genop(struct vaccel_session *sess, struct vaccel_arg  *read,</span></a>
+<a name="66"><span class="lineNum">      66 </span><span class="lineCov">         13 : int vaccel_genop(struct vaccel_session *sess, struct vaccel_arg  *read,</span></a>
 <a name="67"><span class="lineNum">      67 </span>            :                 int nr_read, struct vaccel_arg *write, int nr_write)</a>
 <a name="68"><span class="lineNum">      68 </span>            : {</a>
-<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :         if (!nr_read) {</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineCov">         13 :         if (!nr_read) {</span></a>
 <a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                 vaccel_error(&quot;Calling genop without op type&quot;);</span></a>
 <a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
 <a name="72"><span class="lineNum">      72 </span>            :         }</a>
 <a name="73"><span class="lineNum">      73 </span>            : </a>
-<a name="74"><span class="lineNum">      74 </span><span class="lineNoCov">          0 :         enum vaccel_op_type op = *(enum vaccel_op_type *)read[0].buf;</span></a>
-<a name="75"><span class="lineNum">      75 </span><span class="lineNoCov">          0 :         if (op &gt;= VACCEL_FUNCTIONS_NR) {</span></a>
+<a name="74"><span class="lineNum">      74 </span><span class="lineCov">         13 :         enum vaccel_op_type op = *(enum vaccel_op_type *)read[0].buf;</span></a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">         13 :         if (op &gt;= VACCEL_FUNCTIONS_NR) {</span></a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 vaccel_error(&quot;Invalid operation type: %u&quot;, op);</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 return VACCEL_EINVAL;</span></a>
 <a name="78"><span class="lineNum">      78 </span>            :         }</a>
 <a name="79"><span class="lineNum">      79 </span>            : </a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :         return callbacks[op](sess, &amp;read[1], nr_read - 1, write, nr_write);</span></a>
+<a name="80"><span class="lineNum">      80 </span><span class="lineCov">         13 :         return callbacks[op](sess, &amp;read[1], nr_read - 1, write, nr_write);</span></a>
 <a name="81"><span class="lineNum">      81 </span>            : }</a>
 </pre>
       </td>

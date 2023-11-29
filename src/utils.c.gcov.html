@@ -31,13 +31,13 @@
             <td class="headerValue">total_coverage_filtered.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">21</td>
-            <td class="headerCovTableEntry">30</td>
-            <td class="headerCovTableEntryLo">70.0 %</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntryLo">64.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-11-19 05:16:35</td>
+            <td class="headerValue">2023-11-29 00:09:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -114,7 +114,7 @@
 <a name="52"><span class="lineNum">      52 </span>            : </a>
 <a name="53"><span class="lineNum">      53 </span><span class="lineCov">          5 :         fd = open(path, O_RDONLY);</span></a>
 <a name="54"><span class="lineNum">      54 </span><span class="lineCov">          5 :         if (fd == -1) {</span></a>
-<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;Could not open file %s&quot;, path);</span></a>
+<a name="55"><span class="lineNum">      55 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;Could not open file %s: %s&quot;, path, strerror(errno));</span></a>
 <a name="56"><span class="lineNum">      56 </span><span class="lineNoCov">          0 :                 return errno;</span></a>
 <a name="57"><span class="lineNum">      57 </span>            :         }</a>
 <a name="58"><span class="lineNum">      58 </span>            : </a>
@@ -122,26 +122,31 @@
 <a name="60"><span class="lineNum">      60 </span>            :         struct stat stat;</a>
 <a name="61"><span class="lineNum">      61 </span><span class="lineCov">          5 :         ret = fstat(fd, &amp;stat);</span></a>
 <a name="62"><span class="lineNum">      62 </span><span class="lineCov">          5 :         if (ret &lt; 0) {</span></a>
-<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;Could not debug file %s&quot;, strerror(errno));</span></a>
+<a name="63"><span class="lineNum">      63 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;Could not fstat file: %s&quot;, strerror(errno));</span></a>
 <a name="64"><span class="lineNum">      64 </span><span class="lineNoCov">          0 :                 ret = errno;</span></a>
 <a name="65"><span class="lineNum">      65 </span><span class="lineNoCov">          0 :                 goto close_file;</span></a>
 <a name="66"><span class="lineNum">      66 </span>            :         }</a>
-<a name="67"><span class="lineNum">      67 </span>            : </a>
-<a name="68"><span class="lineNum">      68 </span><span class="lineCov">          5 :         void *ptr = mmap(NULL, stat.st_size, PROT_READ|PROT_WRITE, MAP_PRIVATE,</span></a>
-<a name="69"><span class="lineNum">      69 </span>            :                         fd, 0);</a>
-<a name="70"><span class="lineNum">      70 </span><span class="lineCov">          5 :         if (!ptr) {</span></a>
-<a name="71"><span class="lineNum">      71 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;Could not mmap file&quot;);</span></a>
-<a name="72"><span class="lineNum">      72 </span><span class="lineNoCov">          0 :                 ret = VACCEL_ENOMEM;</span></a>
-<a name="73"><span class="lineNum">      73 </span><span class="lineNoCov">          0 :                 goto close_file;</span></a>
-<a name="74"><span class="lineNum">      74 </span>            :         }</a>
-<a name="75"><span class="lineNum">      75 </span>            : </a>
-<a name="76"><span class="lineNum">      76 </span><span class="lineCov">          5 :         *data = ptr;</span></a>
-<a name="77"><span class="lineNum">      77 </span><span class="lineCov">          5 :         *size = stat.st_size;</span></a>
-<a name="78"><span class="lineNum">      78 </span>            : </a>
-<a name="79"><span class="lineNum">      79 </span><span class="lineCov">          5 : close_file:</span></a>
-<a name="80"><span class="lineNum">      80 </span><span class="lineCov">          5 :         close(fd);</span></a>
-<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          5 :         return ret;</span></a>
-<a name="82"><span class="lineNum">      82 </span>            : }</a>
+<a name="67"><span class="lineNum">      67 </span><span class="lineCov">          5 :         if (!stat.st_size) {</span></a>
+<a name="68"><span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;File %s is empty&quot;, path);</span></a>
+<a name="69"><span class="lineNum">      69 </span><span class="lineNoCov">          0 :                 ret = VACCEL_EINVAL;</span></a>
+<a name="70"><span class="lineNum">      70 </span><span class="lineNoCov">          0 :                 goto close_file;</span></a>
+<a name="71"><span class="lineNum">      71 </span>            :         }</a>
+<a name="72"><span class="lineNum">      72 </span>            : </a>
+<a name="73"><span class="lineNum">      73 </span><span class="lineCov">          5 :         void *ptr = mmap(NULL, stat.st_size, PROT_READ|PROT_WRITE, MAP_PRIVATE,</span></a>
+<a name="74"><span class="lineNum">      74 </span>            :                         fd, 0);</a>
+<a name="75"><span class="lineNum">      75 </span><span class="lineCov">          5 :         if (!ptr) {</span></a>
+<a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :                 vaccel_debug(&quot;Could not mmap file: %s&quot;, strerror(errno));</span></a>
+<a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :                 ret = VACCEL_ENOMEM;</span></a>
+<a name="78"><span class="lineNum">      78 </span><span class="lineNoCov">          0 :                 goto close_file;</span></a>
+<a name="79"><span class="lineNum">      79 </span>            :         }</a>
+<a name="80"><span class="lineNum">      80 </span>            : </a>
+<a name="81"><span class="lineNum">      81 </span><span class="lineCov">          5 :         *data = ptr;</span></a>
+<a name="82"><span class="lineNum">      82 </span><span class="lineCov">          5 :         *size = stat.st_size;</span></a>
+<a name="83"><span class="lineNum">      83 </span>            : </a>
+<a name="84"><span class="lineNum">      84 </span><span class="lineCov">          5 : close_file:</span></a>
+<a name="85"><span class="lineNum">      85 </span><span class="lineCov">          5 :         close(fd);</span></a>
+<a name="86"><span class="lineNum">      86 </span><span class="lineCov">          5 :         return ret;</span></a>
+<a name="87"><span class="lineNum">      87 </span>            : }</a>
 </pre>
       </td>
     </tr>

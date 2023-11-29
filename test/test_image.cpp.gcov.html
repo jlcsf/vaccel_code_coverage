@@ -31,13 +31,13 @@
             <td class="headerValue">total_coverage_filtered.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">234</td>
-            <td class="headerCovTableEntry">292</td>
-            <td class="headerCovTableEntryMed">80.1 %</td>
+            <td class="headerCovTableEntry">239</td>
+            <td class="headerCovTableEntry">297</td>
+            <td class="headerCovTableEntryMed">80.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-11-19 05:16:35</td>
+            <td class="headerValue">2023-11-29 00:09:13</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">11</td>
@@ -201,7 +201,7 @@
 <a name="139"><span class="lineNum">     139 </span>            : </a>
 <a name="140"><span class="lineNum">     140 </span><span class="lineCov">          1 :     REQUIRE(ret == 0);</span></a>
 <a name="141"><span class="lineNum">     141 </span>            : </a>
-<a name="142"><span class="lineNum">     142 </span>            :     uint32_t image_size_uint32;</a>
+<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          1 :     uint32_t image_size_uint32 = 0;</span></a>
 <a name="143"><span class="lineNum">     143 </span><span class="lineCov">          1 :     if (image_size &lt;= UINT32_MAX) {</span></a>
 <a name="144"><span class="lineNum">     144 </span><span class="lineCov">          1 :         image_size_uint32 = static_cast&lt;uint32_t&gt;(image_size);</span></a>
 <a name="145"><span class="lineNum">     145 </span>            :     } else {</a>
@@ -302,7 +302,7 @@
 <a name="240"><span class="lineNum">     240 </span><span class="lineCov">          1 :     ret = read_file(file_path, &amp;image, &amp;image_size);</span></a>
 <a name="241"><span class="lineNum">     241 </span><span class="lineCov">          1 :     REQUIRE(ret == 0);</span></a>
 <a name="242"><span class="lineNum">     242 </span>            : </a>
-<a name="243"><span class="lineNum">     243 </span>            :     uint32_t image_size_uint32;</a>
+<a name="243"><span class="lineNum">     243 </span><span class="lineCov">          1 :     uint32_t image_size_uint32 = 0;</span></a>
 <a name="244"><span class="lineNum">     244 </span><span class="lineCov">          1 :     if (image_size &lt;= UINT32_MAX) {</span></a>
 <a name="245"><span class="lineNum">     245 </span><span class="lineCov">          1 :         image_size_uint32 = static_cast&lt;uint32_t&gt;(image_size);</span></a>
 <a name="246"><span class="lineNum">     246 </span>            :     } else {</a>
@@ -402,7 +402,7 @@
 <a name="340"><span class="lineNum">     340 </span><span class="lineCov">          1 :     ret = read_file(argv[1], &amp;image, &amp;image_size);</span></a>
 <a name="341"><span class="lineNum">     341 </span><span class="lineCov">          1 :     REQUIRE(ret == VACCEL_OK);</span></a>
 <a name="342"><span class="lineNum">     342 </span>            : </a>
-<a name="343"><span class="lineNum">     343 </span>            :     uint32_t image_size_uint32;</a>
+<a name="343"><span class="lineNum">     343 </span><span class="lineCov">          1 :     uint32_t image_size_uint32 = 0;</span></a>
 <a name="344"><span class="lineNum">     344 </span><span class="lineCov">          1 :     if (image_size &lt;= UINT32_MAX) {</span></a>
 <a name="345"><span class="lineNum">     345 </span><span class="lineCov">          1 :         image_size_uint32 = static_cast&lt;uint32_t&gt;(image_size);</span></a>
 <a name="346"><span class="lineNum">     346 </span>            :     } else {</a>
@@ -502,7 +502,7 @@
 <a name="440"><span class="lineNum">     440 </span><span class="lineCov">          1 :     ret = read_file(argv[1], &amp;image, &amp;image_size);</span></a>
 <a name="441"><span class="lineNum">     441 </span><span class="lineCov">          1 :     REQUIRE(ret == VACCEL_OK);</span></a>
 <a name="442"><span class="lineNum">     442 </span>            : </a>
-<a name="443"><span class="lineNum">     443 </span>            :     uint32_t image_size_uint32;</a>
+<a name="443"><span class="lineNum">     443 </span><span class="lineCov">          1 :     uint32_t image_size_uint32 = 0;</span></a>
 <a name="444"><span class="lineNum">     444 </span><span class="lineCov">          1 :     if (image_size &lt;= UINT32_MAX) {</span></a>
 <a name="445"><span class="lineNum">     445 </span><span class="lineCov">          1 :         image_size_uint32 = static_cast&lt;uint32_t&gt;(image_size);</span></a>
 <a name="446"><span class="lineNum">     446 </span>            :     } else {</a>
@@ -603,7 +603,7 @@
 <a name="541"><span class="lineNum">     541 </span><span class="lineCov">          1 :     ret = read_file(argv[1], &amp;image, &amp;image_size);</span></a>
 <a name="542"><span class="lineNum">     542 </span><span class="lineCov">          1 :     REQUIRE(ret == VACCEL_OK);</span></a>
 <a name="543"><span class="lineNum">     543 </span>            : </a>
-<a name="544"><span class="lineNum">     544 </span>            :     uint32_t image_size_uint32;</a>
+<a name="544"><span class="lineNum">     544 </span><span class="lineCov">          1 :     uint32_t image_size_uint32 = 0;</span></a>
 <a name="545"><span class="lineNum">     545 </span><span class="lineCov">          1 :     if (image_size &lt;= UINT32_MAX) {</span></a>
 <a name="546"><span class="lineNum">     546 </span><span class="lineCov">          1 :         image_size_uint32 = static_cast&lt;uint32_t&gt;(image_size);</span></a>
 <a name="547"><span class="lineNum">     547 </span>            :     } else {</a>
